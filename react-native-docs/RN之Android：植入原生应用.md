@@ -2,6 +2,7 @@
 
 由于官方文档语焉不详，一些详细步骤没有配置好的话很容易植入失败，这里工具是AS，我是在Mac上做的，，尝试并且最终成功了。
 React植入原生应用步骤：（注意是Mac上的，windows尚未尝试）
+
     步骤1:  植入前提
         一个已有的、基于gradle构建的Android应用
          Node.js，参见官方文档了解相关的设置操作。（环境是否配置好的检验标准是能否成功初始化一个RN工程并运行在手机上）
@@ -13,7 +14,7 @@ React植入原生应用步骤：（注意是Mac上的，windows尚未尝试）
           然后，在AndroidManifest.xml里增加Internet访问权限：
        <uses-permission android:name="android.permission.INTERNET" />
        
-   步骤3: 添加原生代码，即以React为View的Activity
+    步骤3: 添加原生代码，即以React为View的Activity
      官方文档目前是0.18版本以前的，我这里按照0.18版本的（基本一样的，只是官方又进一步封装给我们用）
      新建MyReactActivity,继承ReactActivity，代码如下。
      只有三个抽象方法需要实现，默认是返回null，需要修改。
@@ -43,7 +44,7 @@ React植入原生应用步骤：（注意是Mac上的，windows尚未尝试）
           android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
      <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
      
-   步骤4: 添加React环境
+    步骤4: 添加React环境
      打开控制台，在当前工程根目录里执行（AS直接点击下面的控制台就可以）
          npm init
       会有提示，说执行 npm help json可以查看下面具体属性的定义 和npm install <pkg> --save可以生成包。
@@ -53,6 +54,7 @@ React植入原生应用步骤：（注意是Mac上的，windows尚未尝试）
      然后把这个帮助说明文档一点点全部复制下来（不大），大致看看注意要点，后面填写时不明白的就查查看。
      需要提示一点是这些属性有的不能随便写，否则构建不成功。
      我的那些属性最终如下，有些是根据自己的React模块填写的，有的是根据刚才那个帮助文档填写的。
+     
            {
                "name": "myreactactivity",
                "version": "0.0.1", 
@@ -84,8 +86,8 @@ React植入原生应用步骤：（注意是Mac上的，windows尚未尝试）
         curl -o .flowconfig https://raw.githubusercontent.com/facebook/react-native/master/.flowconfig
        现在打开新创建的package.json文件然后在scripts字段下添加如下内容：
         "start": "node_modules/react-native/packager/packager.sh" // 我的上面已经有的就是在这一步添加的
-    
-   步骤5: 添加JS代码
+        
+    步骤5: 添加JS代码
         在project目录下（也就是package.json所在目录）新建名为index.android.js的JS文件，在里面拷贝如下内容
        'use strict';
         var React = require('react-native');
@@ -116,16 +118,15 @@ React植入原生应用步骤：（注意是Mac上的，windows尚未尝试）
         });
         
         React.AppRegistry.registerComponent('myreactactivity', () => myreactactivity);
+        这就是个JS文件，会ReactJS的可以随便写了，只要引入的组件名对的上就好。
         
-    这就是个JS文件，会ReactJS的可以随便写了，只要引入的组件名对的上就好。
-    
-   步骤6: 添加安卓关联代码
+    步骤6: 添加安卓关联代码
        上面的新建的MyReactActivity可以设置为入口activity，也可以设置为普通activity。
        如果打算设置为入口activity的话，就在清单文件里自己配置就可以，不需要额外代码；
        如果打算设置为普通acitivity,就按正常原生activity一样配置和用代码启动就好。
        总结一句话就是：启动和加载这个MyReactActivity按照原生Activity一样配置和加载就好。
        
-   步骤7: 运行应用
+    步骤7: 运行应用
        先在工程目录下启动JS服务器，在控制台运行
            npm start
        然后启动APP，用AS的正常Run就可以。
