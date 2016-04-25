@@ -26,6 +26,7 @@
    要注意一点是虽然默认返回null，但这样写编译时会出错，要改写成返回空集合，一般写成
        return Collections.emptyList();
    此时需要在createNativeModeule里，返回带有上面module的集合
+   
        @Override
         public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
             return Arrays.<NativeModule>asList(
