@@ -1,4 +1,4 @@
-参考[官方文档](http://facebook.github.io/react-native/docs/native-components-android.html#content)[中文版](http://reactnative.cn/docs/0.23/native-component-android.html#content)
+参考[官方文档](http://facebook.github.io/react-native/docs/native-components-android.html#content),[中文版](http://reactnative.cn/docs/0.23/native-component-android.html#content)
 
 官方文档以ImageView为样例，这里以android原生最常见的TextView的做一下简单封装示例，官方组件中已有关于原生TextView的更完整的封装，需要的可以去看。
 
