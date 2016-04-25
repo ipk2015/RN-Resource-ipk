@@ -3,24 +3,26 @@
 下面的步骤是在RN0.17版本的，0.18版本后也是可以的，由于官方进一步封装，具体步骤可能略有不同。
 
 1.导入Android原生模块的步骤
-*1.新建java类继承ReactContextBaseJavaModule.
-        'public class MyToastModule extends ReactContextBaseJavaModule'
+        步骤1.新建java类继承ReactContextBaseJavaModule.
+        public class MyToastModule extends ReactContextBaseJavaModule
+        
   必须复写getName方法，return后跟的是JS里要调用的名字（可不同于类名）。
-    '''
+  
       public String getName() {
         return "MyToastAndroid";
        }
-    '''   
+       
    定义要被JS使用的方法，要加上注解@ReactMethod
-   '''
+   
        @ReactMethod
         public void show(){
             Toast.makeText(getReactApplicationContext(),"hello",Toast.LENGTH_LONG).show();
         }
-   '''
-        步骤2.新建类实现ReactPackage接口              
-            'public class MyReactPackage  implements ReactPackage'
-   有三个方法需要实现：createNativeModeule,createJSModules,createViewManagers.这三个方法都返回list，
+        步骤2.新建类实现ReactPackage接口
+        
+            public class MyReactPackage  implements ReactPackage
+            
+        有三个方法需要实现：createNativeModeule,createJSModules,createViewManagers.这三个方法都返回list，
    要注意一点是虽然默认返回null，但这样写编译时会出错，要改写成返回空集合，一般写成
        return Collections.emptyList();
    此时需要在createNativeModeule里，返回带有上面module的集合
