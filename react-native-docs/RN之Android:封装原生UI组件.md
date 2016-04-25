@@ -242,11 +242,11 @@ var myTextView ={
 module.exports =requireNativeComponent('MyTextView',myTextView);
 ```
 
-6.注册原生事件。
+6.注册原生事件.
 到现在，已经基本可以看到将一个原生View封装成RN的view并且可以以组件形式正常使用了，如果你的需求只是在界面上展示这样一个view，甚至可以有点击等触发功能，那么可以满足了。但是如果想产生native端和JS端的互动，亦即原生事件和JS端事件相互绑定和触发，那么还需要进行注册事件，这样也才能形成两端完整的互动。
     首先在native端进行事件注册。
     
-    在MyTextViewManager中，修改createViewInstance方法。\
+    在MyTextViewManager中，修改createViewInstance方法。
 ```
 @Override
     protected TextView createViewInstance(final ThemedReactContext reactContext) {
@@ -273,7 +273,8 @@ module.exports =requireNativeComponent('MyTextView',myTextView);
 这里关键是要理解有RCTEventEmitter的这行代码，并且要写对地方。有些同学参考官方文档没有搞出来，应该就是没有把这行代码写在本地事件发生的时候，例如上面的onTouch里。emitter的中文意思是发出者，发射体。
 然后就是JS端的事件绑定了。
 修改上面的MyTextView.js文件，完整代码如下
-    ```
+
+```
 var {requireNativeComponent,PropTypes}=require('react-native');
 var myTextView ={
     name:'MyTextViewLOL',
@@ -321,11 +322,14 @@ MyView.propTypes={
 module.exports =MyView;
 ```
 这里用MyView对myTextView进行了一次封装。注意到在MyView里为onChange绑定了_onChange方法，在这个方法里我们会调用一个预定义为函数的onChangeMessage。而之前已经在native端将topChange绑定了原生的onTouch事件，topChange又会映射到JS端的onChange属性，这样最后当原生的onTouch事件发生时，就会调用JS端定义的onChangeMessage函数，就实现了两端事件的互动。其实onTouch事件对应到onChange属性后就已经实现了事件绑定，写onChangeMessage是为了示例展示而已。
+
 这里提一下上面的event.nativeEvent.message==='MyMessage'
+
 这一对是在MyTextViewManger里写的，在练习的时候发现当WritableMap里K 为"type"，v随意时，这里用 event.type==='MyMessage' 也可以，但用其他诸如message时就不可以。知道为啥的同学可以告诉下我。
     最后在JS里使用已经封装好的View。
+    
     只需为上面的index.android.js文件添加几行代码即可。
-在RNWIN0410里添加一个函数
+    在RNWIN0410里添加一个函数
 ```
 _onButtonPress(){
         alert("haha");
