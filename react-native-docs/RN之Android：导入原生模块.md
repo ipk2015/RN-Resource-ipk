@@ -1,6 +1,8 @@
 前提是用react－native init 工程名 已经初始化好一个可以正常运行的RN工程（检验标准是在手机上可以正常运行）。
+
 下面的步骤是在RN0.17版本的，0.18版本后也是可以的，由于官方进一步封装，具体步骤可能略有不同。
-一、导入Android原生模块的步骤
+
+1.导入Android原生模块的步骤
         步骤1.新建java类继承ReactContextBaseJavaModule.
       public class MyToastModule extends ReactContextBaseJavaModule
   必须复写getName方法，return后跟的是JS里要调用的名字（可不同于类名）。
@@ -43,7 +45,7 @@
     步骤4.在JS里调用刚才的原生模块
         React.NativeModules.MyToastAndroid.show();
   
-  二、上面是最简单的一种调用，基本步骤是不变的，接下来是在上面基础上多了点东西的调用。
+  2.上面是最简单的一种调用，基本步骤是不变的，接下来是在上面基础上多了点东西的调用。
   
     1.在JS里调用带参数的原生模块里的方法
     将上面的MyToastModule类里的show方法改为
@@ -74,7 +76,7 @@
      var MyToastAndroidLOL = require('./MyToastAndroidJS');//此处确保按文件路径可以被查找到
      MyToastAndroidLOL.show('haha JSModule',MyToastAndroidLOL.HAHA);
      
- 三、回调函数
+ 3.回调函数
      上面全是JS调用原生模块里的方法，有参或无参，但原生模块只是被调用，没有反馈回来数据，下面是回调使用说明。（此处承接上面的3）
      1.使用Callback回调
      在MyToastAndroid中添加方法showAll。在showAll的参数中的callback是com.facebook.react.bridge.Callback，注意别导错包了。
