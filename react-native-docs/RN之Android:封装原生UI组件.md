@@ -243,6 +243,7 @@ module.exports =requireNativeComponent('MyTextView',myTextView);
 ```
 
 6.注册原生事件.
+
 到现在，已经基本可以看到将一个原生View封装成RN的view并且可以以组件形式正常使用了，如果你的需求只是在界面上展示这样一个view，甚至可以有点击等触发功能，那么可以满足了。但是如果想产生native端和JS端的互动，亦即原生事件和JS端事件相互绑定和触发，那么还需要进行注册事件，这样也才能形成两端完整的互动。
     首先在native端进行事件注册。
     
@@ -269,9 +270,13 @@ module.exports =requireNativeComponent('MyTextView',myTextView);
         return textView;
     }
 ```
+
 这是在创建的view实例中，当发生本地事件时进行事件注册。这个事件名topChange在JavaScript端映射到onChange回调属性上，这个映射关系是固定的被官方写在UIManagerModuleConstants.java文件里了，当自己有其他事件需求时需要去这个类里查询。
+
 这里关键是要理解有RCTEventEmitter的这行代码，并且要写对地方。有些同学参考官方文档没有搞出来，应该就是没有把这行代码写在本地事件发生的时候，例如上面的onTouch里。emitter的中文意思是发出者，发射体。
+
 然后就是JS端的事件绑定了。
+
 修改上面的MyTextView.js文件，完整代码如下
 
 ```
@@ -329,6 +334,7 @@ module.exports =MyView;
     最后在JS里使用已经封装好的View。
     
     只需为上面的index.android.js文件添加几行代码即可。
+    
     在RNWIN0410里添加一个函数
 ```
 _onButtonPress(){
@@ -339,9 +345,13 @@ _onButtonPress(){
     }
 为<MyTextView />添加一个属性onChangeMessage={()=>this._onButtonPress()}
 ```
+
 好了，重新react-native run-android，看到haha后点击下应该就会出现弹窗和发生文字更改了。
+
 上面就是我参考官方文档实现的封装原生组件过程，还是比较简单的，限于经验有限，若有错误还望指点。还是鼓励大家多去看官方文档和组件代码，会学到很多东西，至于有时模仿官方代码反而错误百出的时候要注意官方的封装是系统的层层封装，不像这个示例一样只是一个类而已。
+
 最近RN版本更新到0.23.1了，发现对windows的兼容性好很多了。在家里在windows10下试着init了下发现竟然成功了！我这是前几个月时按官方教程一步步来配置的环境，只是当时一直出问题就放弃了。现在竟然创建工程成功了，并且可以正常跑在我的锤子上了！
+
 这是不是说明RN的1.0正式版本就快要推出了呢
 
 
