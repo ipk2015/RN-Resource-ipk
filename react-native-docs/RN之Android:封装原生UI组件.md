@@ -5,16 +5,17 @@
     这里封装的前提是已经有一个可以正常运行的RN工程。
     建议添加Java代码时用AS来打开android工程，添加JS代码时用IDEA。这样都会有智能提示，比较方便。
     
-#封装Android原生视图的基本步骤：
-
+####封装Android原生视图的基本步骤：
+```
 1.创建一个ViewManager的子类，并实现必需方法。
 2.创建自己的ReactPackage,并将1中创建的ViewManager的子类添加到其中；再将自己的ReactPackage添加到工程里的ReactActivity。
 3.在1中创建的ViewManager子类中导出视图的属性设置器：使用@ReactProp（或@ReactPropGroup）注解。
 4.实现JS模块。
 5.在JS里使用封装的原生UI。
 6.注册原生事件
-
+```
 下面为每一步作详细解释并辅以代码。
+
 1.创建一个ViewManager的子类，并实现必需方法。
 ```
 public class MyTextViewManager extends SimpleViewManager<TextView> {
@@ -239,11 +240,11 @@ module.exports =requireNativeComponent('MyTextView',myTextView);
 ```
 
 6.注册原生事件。
-    到现在，已经基本可以看到将一个原生View封装成RN的view并且可以以组件形式正常使用了，如果你的需求只是在界面上展示这样一个view，甚至可以有点击等触发功能，那么可以满足了。但是如果想产生native端和JS端的互动，亦即原生事件和JS端事件相互绑定和触发，那么还需要进行注册事件，这样也才能形成两端完整的互动。
+到现在，已经基本可以看到将一个原生View封装成RN的view并且可以以组件形式正常使用了，如果你的需求只是在界面上展示这样一个view，甚至可以有点击等触发功能，那么可以满足了。但是如果想产生native端和JS端的互动，亦即原生事件和JS端事件相互绑定和触发，那么还需要进行注册事件，这样也才能形成两端完整的互动。
     首先在native端进行事件注册。
     
     在MyTextViewManager中，修改createViewInstance方法。\
-    ```
+```
 @Override
     protected TextView createViewInstance(final ThemedReactContext reactContext) {
         final TextView textView = new TextView(reactContext);
@@ -264,11 +265,11 @@ module.exports =requireNativeComponent('MyTextView',myTextView);
         });
         return textView;
     }
-    ```
+```
 这是在创建的view实例中，当发生本地事件时进行事件注册。这个事件名topChange在JavaScript端映射到onChange回调属性上，这个映射关系是固定的被官方写在UIManagerModuleConstants.java文件里了，当自己有其他事件需求时需要去这个类里查询。
-    这里关键是要理解有RCTEventEmitter的这行代码，并且要写对地方。有些同学参考官方文档没有搞出来，应该就是没有把这行代码写在本地事件发生的时候，例如上面的onTouch里。emitter的中文意思是发出者，发射体。
-    然后就是JS端的事件绑定了。
-    修改上面的MyTextView.js文件，完整代码如下
+这里关键是要理解有RCTEventEmitter的这行代码，并且要写对地方。有些同学参考官方文档没有搞出来，应该就是没有把这行代码写在本地事件发生的时候，例如上面的onTouch里。emitter的中文意思是发出者，发射体。
+然后就是JS端的事件绑定了。
+修改上面的MyTextView.js文件，完整代码如下
     ```
 var {requireNativeComponent,PropTypes}=require('react-native');
 var myTextView ={
@@ -317,9 +318,8 @@ MyView.propTypes={
 module.exports =MyView;
 ```
 这里用MyView对myTextView进行了一次封装。注意到在MyView里为onChange绑定了_onChange方法，在这个方法里我们会调用一个预定义为函数的onChangeMessage。而之前已经在native端将topChange绑定了原生的onTouch事件，topChange又会映射到JS端的onChange属性，这样最后当原生的onTouch事件发生时，就会调用JS端定义的onChangeMessage函数，就实现了两端事件的互动。其实onTouch事件对应到onChange属性后就已经实现了事件绑定，写onChangeMessage是为了示例展示而已。
-    这里提一下上面的event.nativeEvent.message==='MyMessage'
-   这一对是在MyTextViewManger里写的，在练习的时候发现当WritableMap里K 为"type"，v随意时，这里
-用    event.type==='MyMessage' 也可以，但用其他诸如message时就不可以。知道为啥的同学可以告诉下我。
+这里提一下上面的event.nativeEvent.message==='MyMessage'
+这一对是在MyTextViewManger里写的，在练习的时候发现当WritableMap里K 为"type"，v随意时，这里用 event.type==='MyMessage' 也可以，但用其他诸如message时就不可以。知道为啥的同学可以告诉下我。
     最后在JS里使用已经封装好的View。
     只需为上面的index.android.js文件添加几行代码即可。
 在RNWIN0410里添加一个函数
@@ -333,9 +333,9 @@ _onButtonPress(){
 为<MyTextView />添加一个属性onChangeMessage={()=>this._onButtonPress()}
 ```
 好了，重新react-native run-android，看到haha后点击下应该就会出现弹窗和发生文字更改了。
-    上面就是我参考官方文档实现的封装原生组件过程，还是比较简单的，限于经验有限，若有错误还望指点。还是鼓励大家多去看官方文档和组件代码，会学到很多东西，至于有时模仿官方代码反而错误百出的时候要注意官方的封装是系统的层层封装，不像这个示例一样只是一个类而已。
-    最近RN版本更新到0.23.1了，发现对windows的兼容性好很多了。在家里在windows10下试着init了下发现竟然成功了！我这是前几个月时按官方教程一步步来配置的环境，只是当时一直出问题就放弃了。现在竟然创建工程成功了，并且可以正常跑在我的锤子上了！
-    这是不是说明RN的1.0正式版本就快要推出了呢
+上面就是我参考官方文档实现的封装原生组件过程，还是比较简单的，限于经验有限，若有错误还望指点。还是鼓励大家多去看官方文档和组件代码，会学到很多东西，至于有时模仿官方代码反而错误百出的时候要注意官方的封装是系统的层层封装，不像这个示例一样只是一个类而已。
+最近RN版本更新到0.23.1了，发现对windows的兼容性好很多了。在家里在windows10下试着init了下发现竟然成功了！我这是前几个月时按官方教程一步步来配置的环境，只是当时一直出问题就放弃了。现在竟然创建工程成功了，并且可以正常跑在我的锤子上了！
+这是不是说明RN的1.0正式版本就快要推出了呢
 
 
 
