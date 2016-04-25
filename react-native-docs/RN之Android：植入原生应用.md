@@ -1,6 +1,5 @@
-基于［官方文档］（http://reactnative.cn/docs/embedded-app-android.html#content）
+基于[官方文档](http://reactnative.cn/docs/embedded-app-android.html#content)
 由于官方文档语焉不详，一些详细步骤没有配置好的话很容易植入失败，这里工具是AS，我是在Mac上做的，，尝试并且最终成功了。
-[百度](http://www.baidu.com)
 React植入原生应用步骤：（注意是Mac上的，windows尚未尝试）
     步骤1:  植入前提
         一个已有的、基于gradle构建的Android应用
