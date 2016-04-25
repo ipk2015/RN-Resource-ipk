@@ -203,7 +203,9 @@ const styles = StyleSheet.create({
 });
 AppRegistry.registerComponent('RN0405', () => RN0405);
 ```
+
 其实主要代码没几行，主要是
+
 ```
 var MyTextView = require('./MyTextView');
 <MyTextView
@@ -212,7 +214,8 @@ var MyTextView = require('./MyTextView');
                 textSize={15}
                 isAlpha={false}
             />
-            ```
+```
+
 要注意的是在styles.myTextView记得设置宽高，否则就算其他做对了，但也不会显示。
 
 到这里所有步骤走完一遍了，来react－native run-android一下吧。（这里是在Mac上，windows上要先react-antive start）
