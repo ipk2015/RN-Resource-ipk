@@ -1,4 +1,3 @@
-package com.cm_wealth_app.rn_native_android.native_view.gesture_lock_view;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
