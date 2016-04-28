@@ -15,9 +15,6 @@ import com.cm_wealth_app.rn_native_android.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by yunpengfeng on 16/4/14.
- */
 public class GestureLockView extends View {
     // Aspect to use when rendering this view
     private static final int ASPECT_SQUARE = 0; // View will be the minimum of width/height
