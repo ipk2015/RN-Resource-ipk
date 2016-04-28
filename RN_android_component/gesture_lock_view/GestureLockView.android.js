@@ -1,6 +1,4 @@
-/**
- * Created by yunpengfeng on 16/4/14.
- */
+
 /**
  *安卓手势密码:3*3,可以更改背景图片和长宽
  * 从onGestureFinished获得每次输入的手势代表数字
