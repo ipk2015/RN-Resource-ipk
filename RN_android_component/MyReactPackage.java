@@ -16,9 +16,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by yunpengfeng on 16/4/5.
- */
 public class MyReactPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
@@ -38,7 +35,6 @@ public class MyReactPackage implements ReactPackage {
     public List<ViewManager> createViewManagers(ReactApplicationContext reactContext) {
         return Arrays.<ViewManager>asList(
                 new PieChartViewManager(),
-                new PieChartViewManager2(),
                 new MyTextViewManager(),
                 new GestureLockViewManager()
         );
