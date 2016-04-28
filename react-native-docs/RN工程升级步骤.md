@@ -3,12 +3,12 @@
     
 2.打开项目目录下的package.json文件，然后在dependencies模块下找到react-native，将当前版本号改到最新。
 如：
-
+```
     "dependencies"    : {
       "react": "^0.14.8",
       "react-native": "^0.23.0"
     }
-    
+ ```   
 
 3.  npm install
      在命令行中运行（译注：如果提示权限错误，就在命令前加上sudo）
