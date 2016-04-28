@@ -6,3 +6,4 @@ react-native ,android
 目前本工程包含有
 
 1.react-native-docs 学习过程中对官方文档的解读补充，以及积累的一些自己总结和收集的关于RN的文章
+2.RN_android_compnent 自己封装的一些安卓原生组件
