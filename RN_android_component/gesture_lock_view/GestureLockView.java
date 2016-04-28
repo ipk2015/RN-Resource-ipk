@@ -1,4 +1,3 @@
-package com.cm_wealth_app.rn_native_android.native_view.gesture_lock_view;
 
 import android.content.Context;
 import android.graphics.*;
