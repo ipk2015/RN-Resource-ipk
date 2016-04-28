@@ -2,3 +2,14 @@
 目前包含有
 1.
 2.
+
+
+```
+@Override
+    protected List<ReactPackage> getPackages() {
+        return Arrays.<ReactPackage>asList(
+            new MainReactPackage(),
+                new MyReactPackage()
+        );
+    }
+```
