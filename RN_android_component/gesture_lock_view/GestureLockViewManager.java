@@ -9,9 +9,6 @@ import com.facebook.react.uimanager.events.RCTEventEmitter;
 
 import java.util.List;
 
-/**
- * Created by yunpengfeng on 16/4/14.
- */
 public class GestureLockViewManager extends SimpleViewManager<GestureLockView> {
     @Override
     public String getName() {
