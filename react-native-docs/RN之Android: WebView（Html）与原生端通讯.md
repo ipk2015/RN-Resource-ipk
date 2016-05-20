@@ -1,8 +1,13 @@
  由于RN本身即为利用原生为JS所调用，Web里的大头Html与JS和原生的通讯肯定是逃不过的。另外就是正常商业化的APP里难免要有活动推广的H5页面，会有直接在H5页面里直接调用如分享／页面跳转等的功能需求。
+
 这里所做的实践是在Mac上，编程工具是IDEA和AS，RN版本是0.24.1。windows平台尚未尝试，不过也应该是一样的，因为没有涉及到如编译环境等问题。
+
 RN目前已有官方组件WebView，
+
 官方教程：http://facebook.github.io/react-native/docs/webview.html#content
+
 中文版：    http://reactnative.cn/docs/0.25/webview.html#content
+
 使用示例：https://github.com/facebook/react-native/blob/a80dd9a92a8d7c201972d1a8b2392e9f893147c8/Examples/UIExplorer/WebViewExample.js
 
 开始的前提是已经新建好一个正常的RN工程。
