@@ -204,10 +204,169 @@ React.NativeModules.MyIntentModule.startActivityForResult(
 
 原生界面的代码也要记得写，不过也没啥好说的了，按原生安卓一样就可以了。
 
+###React界面与Activity
+  之前一直有个思维误区，就是认为在index.android.bundle里
+  `AppRegistry.registerComponent('RN0825', () => RN0825);`
+  这个注册只能用一次。之所以有这样的错误认识，可能是因为之前觉得JSBundle只有一个，入口文件只有一个（index.android.js）,因此注册的组件只能有一个。
+  然而，图样图森破。
+  下面是index.android.js
+  ```
+  import React, { Component } from 'react';
+import {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+    TouchableOpacity
+} from 'react-native';
+import MyModule from './MyModule';
+class RN0825 extends Component {
 
+  goToNext(){
+    alert('hehe');
+    MyModule.startActivityByString("com.rn0825.ThirdActivity");
 
+  }
 
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+          Welcome to React Native!
+        </Text>
+        <Text style={styles.instructions}>
+          To get started, edit index.android.js
+        </Text>
+        <TouchableOpacity onPress={()=>this.goToNext()}>
+          <Text>
+            goToNext
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
+class Hello extends Component {
+  render() {
+    return (
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+            Hello!
+          </Text>
+        </View>
+    );
+  }
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
 
+AppRegistry.registerComponent('RN0825', () => RN0825);
+AppRegistry.registerComponent('hello', () => Hello);
+```
+在Java端里MainActivity.java
+```
+public class MainActivity extends ReactActivity {
+    @Override
+    protected String getMainComponentName() {
+        return "RN0825";
+    }
+}
+```
+SecondActivity.java
+```
+public class SecondActivity extends Activity implements DefaultHardwareBackBtnHandler {
+    private ReactRootView mReactRootView;
+    private ReactInstanceManager mReactInstanceManager;
+    @Override
+    public void invokeDefaultOnBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mReactRootView=new ReactRootView(this);
+        mReactInstanceManager=ReactInstanceManager.builder()
+                .setApplication(getApplication())
+                .setBundleAssetName("index.android.bundle")
+                .setJSMainModuleName("index.android")
+                .addPackage(new MainReactPackage())
+                .setUseDeveloperSupport(BuildConfig.DEBUG)
+                .setInitialLifecycleState(LifecycleState.RESUMED)
+                .build();
+        mReactRootView.startReactApplication(mReactInstanceManager,"hello",null);
+        setContentView(mReactRootView);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostPause();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostResume(this, this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onHostDestroy();
+        }
+    }
+    @Override
+    public void onBackPressed() {
+        if (mReactInstanceManager != null) {
+            mReactInstanceManager.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
+    }
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_MENU && mReactInstanceManager != null) {
+            mReactInstanceManager.showDevOptionsDialog();
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
+    }
+}
+```
+至于中间两个activity调用跳转的代码就不贴了，按正常的来就行，记得在清单文件注册。
+弄完以后，run一下你会发现，这样也是可以的。
+也就是说是可以注册不同的入口组件的。自由度又高了一层有没有。
+要注意一点是如果偷懒将SecondActivity同MainActivity一样简单继承ReactActivity的话，问题就来了，你会发现第一次跳转是没问题的，但再次回到MainActivity时点击界面会不响应。
+这是因为ReactInstanceManager没有重新创建，两个activity共用一个。这样当关闭一个时，ReactInstanceManager就会被destroy，另外一个自然就不会有界面响应了。
+
+###总结那点事
+  通过上面这些React界面与原生界面、activity与react view之间的这些破事还是可以看出他们之间的关系还是很自由的，供自定义的范围和选择还是很宽泛的：多个原生界面与多个React界面是可以有的，彼此之间的相互调用、数据传递也是可以有的。
+  也可以看出如果fb在Android和iOS兼容性和运行性能上做的更好时，前景的确非常好。
+  还是要多读源码多练习，多晒被子多思考啊！
 
 
 
