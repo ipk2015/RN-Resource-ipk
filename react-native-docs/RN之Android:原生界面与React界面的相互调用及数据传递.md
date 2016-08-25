@@ -358,14 +358,20 @@ public class SecondActivity extends Activity implements DefaultHardwareBackBtnHa
 }
 ```
 至于中间两个activity调用跳转的代码就不贴了，按正常的来就行，记得在清单文件注册。
+
 弄完以后，run一下你会发现，这样也是可以的。
+
 也就是说是可以注册不同的入口组件的。自由度又高了一层有没有。
+
 要注意一点是如果偷懒将SecondActivity同MainActivity一样简单继承ReactActivity的话，问题就来了，你会发现第一次跳转是没问题的，但再次回到MainActivity时点击界面会不响应。
+
 这是因为ReactInstanceManager没有重新创建，两个activity共用一个。这样当关闭一个时，ReactInstanceManager就会被destroy，另外一个自然就不会有界面响应了。
 
 ###总结那点事
   通过上面这些React界面与原生界面、activity与react view之间的这些破事还是可以看出他们之间的关系还是很自由的，供自定义的范围和选择还是很宽泛的：多个原生界面与多个React界面是可以有的，彼此之间的相互调用、数据传递也是可以有的。
+  
   也可以看出如果fb在Android和iOS兼容性和运行性能上做的更好时，前景的确非常好。
+  
   还是要多读源码多练习，多晒被子多思考啊！
 
 
