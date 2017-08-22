@@ -14,5 +14,7 @@
   总的来说就是这个文件夹里的文件需要添加更新，否则0.45以后的版本没法跑起来。至于怎么添加更新，可以像我这样删除后重新npm installl，也可以如中文网那样把文件主动拷贝一份过去。RN中文网相关问题：http://reactnative.cn/post/4301
   
 5. `error: bundling failed: "TransformError: ......./index.ios.js: Unexpected token ) (While processing preset: "......../node_modules/babel-preset-react-native/index.js")"`
+
   问题原因在于babel版本，将package.json里的版本改为2.1.0即可
+  
   `"babel-preset-react-native": "2.1.0",`
