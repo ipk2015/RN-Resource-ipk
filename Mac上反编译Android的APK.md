@@ -1,4 +1,4 @@
-### 安装流程
+### 安装apktoll流程
 官网安装链接 https://ibotpeaches.github.io/Apktool/install/
 一定注意别下载错了平台，否则一定安装不成功
 
