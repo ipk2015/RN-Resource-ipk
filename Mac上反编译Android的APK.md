@@ -38,7 +38,7 @@
 
 -  为apk增加签名
 
-`jarsigner -verbose -keystore test.keystore -signedjar gaga1.apk app-cm-319-oppo.apk 'test'`
+`jarsigner -verbose -keystore test.keystore -signedjar hongbao-signed.apk hongbao-unsigned.apk 'test'`
 
 #### 生成jar文件并查看
 
